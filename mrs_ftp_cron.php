@@ -170,6 +170,7 @@ if ($response)
 		mysql_query($inactive_sql) or die("errror");
 
 		$arr_columns = "";
+        $dump = "";
 		$i = 0;
 		foreach ($x->childNodes as $item)
 		{
@@ -189,37 +190,10 @@ if ($response)
 				$str_values = $item->nodeValue;
 				$arr_values = explode("\t", $str_values);
 
-				$table_name 		= "";
 				$numerical_columns 	= array();
 				$primary_columns 	= array();
 				$primary_values 	= array();
 
-				//based on the file_name, set appropriate values for
-				//table_name, numerical_columns, primary_columns and primary_values.
-				$numerical_columns 	= $NUMERICAL_COLUMNS_DATA;
-				$primary_columns 	= $PRIMARY_COLUMNS_DATA;
-
-				if (strpos($file_name, 'RES') !== FALSE)
-				{
-					$table_name = "tbl_data_res";
-				}
-				else if (strpos($file_name, 'CND') !== FALSE)
-				{
-					$table_name = "tbl_data_cnd";
-				}
-				else if (strpos($file_name, 'COM') !== FALSE)
-				{
-					$table_name = "tbl_data_com";
-				}
-				else if (strpos($file_name, 'LLF') !== FALSE)
-				{
-					$table_name = "tbl_data_llf";
-				}
-				else 
-				{
-					$table_name = "tbl_data_rnt";
-				}
-				
 				//get value for each primary column.
 				foreach ($primary_columns as $column)
 				{
@@ -227,14 +201,14 @@ if ($response)
 					$primary_values[] = $arr_values[$index];
 				}
 				
-				$insert_sql = insertSQL($table_name, $arr_columns, $arr_values, $numerical_columns);
-				$update_sql = updateSQL($table_name, $arr_columns, $arr_values, $primary_columns, $primary_values, $numerical_columns);
-				$sql = $insert_sql . " ON DUPLICATE KEY UPDATE " . $update_sql;
-				$result = mysql_query($sql) or die(mysql_error());
+                $row = parseRow($arr_columns, $arr_values, $numerical_columns);
+                $dump .= $row;
+                $dump .= "\n";    
 			}
 		}
+        echo $dump;
 	}
-
+    
 	mail($EMAIL_TO, $EMAIL_SUBJECT_SUCCESS, "Cron job was completed successfully.", $EMAIL_HEADERS);
 
 }
@@ -244,22 +218,9 @@ else
 	exit(0);
 }
 
-function existsSQL($table_name, $columns, $values)
-{
-	$where = "";
-	for ($i=0; $i<count($columns); $i++)
-	{
-		$where = $where . $columns[$i] . " = " . $values[$i];
-		$where = $where . " AND ";
-	}
-	$where = $where . " TRUE = TRUE ";
-	return "SELECT * FROM " . $table_name . " WHERE " . $where;
-}
-
-function insertSQL($table_name, $columns, $values, $numerical_columns)
+function parseRow($columns, $values, $numerical_columns)
 {
 
-	$str_columns = "";
 	$str_values = "";
 	$count = count($columns)-1;
 	$last_column = $count-1;
@@ -269,7 +230,6 @@ function insertSQL($table_name, $columns, $values, $numerical_columns)
 	for ($i=1; $i<$count; $i++)
 	{
 		$current_value = str_replace("'","\'",$values[$i]);
-
 		$is_numerical = in_array($columns[$i], $numerical_columns);
 
 		if ($is_numerical && $current_value === '')
@@ -286,53 +246,14 @@ function insertSQL($table_name, $columns, $values, $numerical_columns)
 
 		if ($i == $last_column)
 		{
-			$str_columns = $str_columns . $columns[$i];
 			$str_values = $str_values . "'" . $current_value . "'";
 		}
 		else 
 		{
-			$str_columns = $str_columns . $columns[$i] . ",";
 			$str_values = $str_values . "'" . $current_value . "',";	
 		}
 	}
-	return "INSERT INTO " . $table_name . " (".$str_columns.") VALUES (".$str_values.") ";
-}
-
-function updateSQL($table_name, $columns, $values, $primary_columns, $primary_values, $numerical_columns)
-{
-	$count = count($columns)-1;
-	$last_column = $count-1;
-
-	$set_sql = "";
-
-	// we're skipping the first and the last row since
-	// they just return '\t'
-	for ($i=1; $i<$count; $i++)
-	{
-		$current_value = str_replace("'","\'",$values[$i]);
-		$is_numerical = in_array($columns[$i], $numerical_columns);
-
-		if ($is_numerical && $current_value === '')
-		{
-			$current_value = '0';
-		}
-
-		if ($columns[$i] === "LotSize" ||
-			$columns[$i] === "MediaDescription" ||
-			$columns[$i] === "URL")
-		{
-			$current_value = '';
-		}
-
-		$set_sql = $set_sql . $columns[$i] . " = '" . $current_value . "'";
-		if ($i !== $last_column)
-		{
-			$set_sql = $set_sql . ", ";
-		}
-		
-	}
-
-	return $set_sql;
+	return $str_values;
 }
 
 function endsWith($haystack, $needle)
