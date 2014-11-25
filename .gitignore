@@ -1,0 +1,5 @@
+# zip files downloaded from ftp server
+*.zip
+
+# 'files' folder containing all CSV files unzipped
+files/
