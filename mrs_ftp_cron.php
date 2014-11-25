@@ -165,9 +165,9 @@ if ($response)
 		}
 				
 		//remove all entries from the table.
-		//$inactive_sql = "TRUNCATE TABLE `" . $table_name . "`";
-		//echo $inactive_sql;
-		//mysql_query($inactive_sql) or die("errror");
+		$inactive_sql = "TRUNCATE TABLE `" . $table_name . "`";
+		echo $inactive_sql;
+		mysql_query($inactive_sql) or die("errror");
 
 		$arr_columns = "";
         $dump = "";
@@ -206,7 +206,9 @@ if ($response)
                 $dump .= "\n";    
 			}
 		}
-        echo $dump;
+        
+        $dump_file = fopen($table_name.".dump", "w");
+        fwrite($dump_file, $dump);
 	}
     
 	mail($EMAIL_TO, $EMAIL_SUBJECT_SUCCESS, "Cron job was completed successfully.", $EMAIL_HEADERS);
