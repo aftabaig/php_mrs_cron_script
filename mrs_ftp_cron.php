@@ -209,6 +209,9 @@ if ($response)
         
         $dump_file = fopen($table_name.".dump", "w");
         fwrite($dump_file, $dump);
+        $dump_sql = "LOAD DATA INFILE '" . $table_name . ".dump " . " INTO TABLE " . $table_name . " FIELD TERMINATED BY ','";
+        mysql_query($dump_sql) or die("error");
+        
 	}
     
 	mail($EMAIL_TO, $EMAIL_SUBJECT_SUCCESS, "Cron job was completed successfully.", $EMAIL_HEADERS);
