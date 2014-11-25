@@ -165,9 +165,9 @@ if ($response)
 		}
 				
 		//remove all entries from the table.
-		$inactive_sql = "TRUNCATE TABLE `" . $table_name . "`";
-		echo $inactive_sql;
-		mysql_query($inactive_sql) or die("errror");
+		//$inactive_sql = "TRUNCATE TABLE `" . $table_name . "`";
+		//echo $inactive_sql;
+		//mysql_query($inactive_sql) or die("errror");
 
 		$arr_columns = "";
         $dump = "";
