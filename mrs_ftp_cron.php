@@ -11,7 +11,7 @@ $PASSWORD 	= "951885";
 
 $DB_SERVER 		= "localhost";
 $DB_USERNAME 	= "root";
-$DB_PASSWORD 	= "university";
+$DB_PASSWORD 	= "Chaghi25BigMac";
 $DB_NAME 		= "myrealt8_mrs";
 
 $EMAIL_TO 				= "aftabaig@gmail.com";
