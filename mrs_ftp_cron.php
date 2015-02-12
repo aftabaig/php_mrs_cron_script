@@ -231,6 +231,7 @@ if ($response)
 				}
 				
 				$insert_sql = insertSQL($table_name, $arr_columns, $arr_values, $numerical_columns);
+				echo $insert_sql . "\n";
 				$update_sql = updateSQL($table_name, $arr_columns, $arr_values, $primary_columns, $primary_values, $numerical_columns);
 				$sql = $insert_sql . " ON DUPLICATE KEY UPDATE " . $update_sql;
 				$result = mysql_query($sql) or die(mysql_error());
