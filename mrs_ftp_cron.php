@@ -9,9 +9,9 @@ $FTP_SERVER = "retsftp.realtracs.com";
 $USERNAME 	= "Davenport";
 $PASSWORD 	= "951885";
 
-$DB_SERVER 		= "173.194.104.190";
+$DB_SERVER 		= "localhost";
 $DB_USERNAME 	= "root";
-$DB_PASSWORD 	= "MRSapp(!@#$)";
+$DB_PASSWORD 	= "university";
 $DB_NAME 		= "myrealt8_mrs";
 
 $EMAIL_TO 				= "aftabaig@gmail.com";
