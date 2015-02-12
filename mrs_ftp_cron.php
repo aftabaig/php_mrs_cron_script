@@ -50,7 +50,9 @@ $NUMERICAL_COLUMNS_DATA = array(
 	"SecurityDeposit",
 	"PetDeposit",
 	"MinimumLease",
-	"LeasePerMonth"
+	"LeasePerMonth",
+	"AbsLatitude",
+	"AbsLongitude"
 );
 
 //primary columns for data tables.
