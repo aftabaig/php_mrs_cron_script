@@ -127,6 +127,7 @@ if ($response)
 	
 	//connect to db.
 	$db_connection = mysql_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD);
+	mysql_query("SET NAMES utf8");
 	mysql_select_db($DB_NAME, $db_connection);
 
 	if (mysqli_connect_errno())
