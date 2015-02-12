@@ -48,7 +48,7 @@ CREATE TABLE `tbl_data_cnd` (
   `OfficeCoListPhone` varchar(64) DEFAULT NULL,
   `MasterBathDesc` varchar(320) DEFAULT NULL,
   `AppliancesOther` varchar(320) DEFAULT NULL,
-  `GreenCertifyingBody` varchar(320) DEFAULT NULL,
+  `GreenCertifyingBody` varchar(1024) DEFAULT NULL,
   `ListPrice` decimal(10,0) DEFAULT NULL,
   `CountyID` varchar(32) DEFAULT NULL,
   `OfficeListCode` varchar(64) DEFAULT NULL,
